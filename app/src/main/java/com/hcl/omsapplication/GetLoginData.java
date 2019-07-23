@@ -60,7 +60,7 @@ public class GetLoginData extends AsyncTask<String,Integer,String> {
         try {
             ///URL url = new URL("http://10.0.2.2:8080/login");
             JSONObject data = null;
-            jsonRequest = new JsonObjectRequest(Request.Method.POST, "http://10.0.2.2:8080/login", loginData,
+            jsonRequest = new JsonObjectRequest(Request.Method.POST, "http://10.0.2.2:8080/customer/login", loginData,
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
@@ -81,7 +81,6 @@ public class GetLoginData extends AsyncTask<String,Integer,String> {
             Log.e("error"," " + e  + " " + e.getMessage());
         }
         rq.add(jsonRequest);
-
         return example;
     }
 
