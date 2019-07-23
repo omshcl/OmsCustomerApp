@@ -36,7 +36,7 @@ public class CreateOrder extends AppCompatActivity {
         sampleGetApi = retrofit.create(sampleGetApi.class);
 
 //        getPosts();
-        createPost();
+//        createPost();
 
     }
 

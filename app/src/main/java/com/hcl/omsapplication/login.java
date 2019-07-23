@@ -12,6 +12,9 @@ import com.google.gson.JsonObject;
 
 import org.json.JSONObject;
 
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -33,42 +36,43 @@ public class login extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         sampleGetApi = retrofit.create(sampleGetApi.class);
-
-
     }
 
     public void login(View view) {
-//        Intent createOrderIntent = new Intent(this, CreateOrder.class);
-//        EditText username = (EditText) findViewById(R.id.username);
-//        EditText password = (EditText) findViewById(R.id.password);
-//        String user = username.getText().toString();
-//        String pass = username.getText().toString();
-//        createOrderIntent.putExtra("Username", user);
-//        startActivity(createOrderIntent);
-        loginPost();
+        EditText username = (EditText) findViewById(R.id.username);
+        EditText password = (EditText) findViewById(R.id.password);
+        String user = username.getText().toString();
+        String pass = password.getText().toString();
+        loginPost(user, pass);
     }
 
-    private void loginPost() {
+    private void loginPost(String user, String pass) {
+        final LoginPost login = new LoginPost(user, pass);
+        Call<LoginStatus> call = sampleGetApi.loginPost(login);
 
-        LoginPost login = new LoginPost("pat_abh", "Admin!123");
-
-        Call<JsonObject> call = sampleGetApi.loginPost(login);
-
-        call.enqueue(new Callback<JsonObject>() {
+        call.enqueue(new Callback<LoginStatus>() {
             @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+            public void onResponse(Call<LoginStatus> call, Response<LoginStatus> response) {
+
                 if (!response.isSuccessful()) {
                     textViewResult.setText("Code: " + response.code());
                     return;
                 }
 
-                String s = String.valueOf(response.body());
-                textViewResult.setText(s);
+                LoginStatus status = response.body();
+
+                if (status.isValid) {
+                    Intent createOrderIntent = new Intent(getApplicationContext(), CreateOrder.class);
+                    textViewResult.setText("Success");
+                    createOrderIntent.putExtra("Username", "user");
+                    startActivity(createOrderIntent);
+                } else
+                    textViewResult.setText("Failure");
 
             }
 
             @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
+            public void onFailure(Call<LoginStatus> call, Throwable t) {
                 textViewResult.setText(t.getMessage());
             }
         });

@@ -20,5 +20,5 @@ public interface sampleGetApi {
     Call<Post> createPost(@Body Post post);
 
     @POST("login")
-    Call<JsonObject> loginPost(@Body LoginPost loginPost);
+    Call<LoginStatus> loginPost(@Body LoginPost loginPost);
 }
