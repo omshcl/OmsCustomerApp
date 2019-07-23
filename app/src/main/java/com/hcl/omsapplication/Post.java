@@ -1,16 +1,38 @@
 package com.hcl.omsapplication;
 
-public class loginPost {
+import com.google.gson.annotations.SerializedName;
 
-    private String username;
+public class Post {
 
-    private String password;
+    private int userId;
 
-    public String getUsername() {
-        return username;
+    private Integer id;
+
+    private String title;
+
+    @SerializedName("body")
+    private String text;
+
+    public Post(int userId, String title, String text){
+        this.userId = userId;
+        this.title = title;
+        this.text = text;
     }
 
-    public String getPassqord() {
-        return password;
+    public int getUserId() {
+        return userId;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getText() {
+        return text;
+    }
+
 }
