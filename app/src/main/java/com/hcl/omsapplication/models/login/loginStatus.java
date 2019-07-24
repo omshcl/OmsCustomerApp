@@ -1,11 +1,11 @@
-package com.hcl.omsapplication;
+package com.hcl.omsapplication.models.login;
 
-public class LoginStatus {
+public class loginStatus {
     public boolean isValid;
 
     public boolean isAdmin;
 
-    public LoginStatus(Boolean isValid, Boolean isAdmin){
+    public loginStatus(Boolean isValid, Boolean isAdmin){
         this.isValid = isValid;
         this.isAdmin = isAdmin;
     }

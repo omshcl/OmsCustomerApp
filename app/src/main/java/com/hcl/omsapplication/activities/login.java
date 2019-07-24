@@ -1,4 +1,4 @@
-package com.hcl.omsapplication;
+package com.hcl.omsapplication.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +8,11 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.hcl.omsapplication.models.login.loginPost;
+import com.hcl.omsapplication.models.login.loginStatus;
+import com.hcl.omsapplication.R;
+import com.hcl.omsapplication.services.apiCalls;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -15,7 +20,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class login extends AppCompatActivity {
-    private apiCalls apiCalls;
+    private com.hcl.omsapplication.services.apiCalls apiCalls;
     private TextView textViewResult;
 
     @Override
@@ -40,22 +45,29 @@ public class login extends AppCompatActivity {
     }
 
     private void loginPost(String user, String pass) {
-        final LoginPost login = new LoginPost(user, pass);
-        Call<LoginStatus> call = apiCalls.loginPost(login);
 
-        call.enqueue(new Callback<LoginStatus>() {
+        // Create an instance of model class loginPost
+        final loginPost login = new loginPost(user, pass);
+
+        // Make POST request to /login
+        Call<loginStatus> call = apiCalls.loginPost(login);
+
+        // Async callback and waits for response
+        call.enqueue(new Callback<loginStatus>() {
             @Override
-            public void onResponse(Call<LoginStatus> call, Response<LoginStatus> response) {
+            public void onResponse(Call<loginStatus> call, Response<loginStatus> response) {
 
                 if (!response.isSuccessful()) {
                     textViewResult.setText("Code: " + response.code());
                     return;
                 }
 
-                LoginStatus status = response.body();
+                // Request is successful
+                loginStatus status = response.body();
 
+                // Go to createOrder page if valid
                 if (status.isValid) {
-                    Intent createOrderIntent = new Intent(getApplicationContext(), CreateOrder.class);
+                    Intent createOrderIntent = new Intent(getApplicationContext(), createOrder.class);
                     textViewResult.setText("Success");
                     createOrderIntent.putExtra("Username", "user");
                     startActivity(createOrderIntent);
@@ -65,7 +77,7 @@ public class login extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<LoginStatus> call, Throwable t) {
+            public void onFailure(Call<loginStatus> call, Throwable t) {
                 textViewResult.setText(t.getMessage());
             }
         });

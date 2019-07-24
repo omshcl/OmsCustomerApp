@@ -1,6 +1,6 @@
-package com.hcl.omsapplication;
+package com.hcl.omsapplication.models.login;
 
-public class LoginPost {
+public class loginPost {
 
     private String username;
 
@@ -14,7 +14,7 @@ public class LoginPost {
         return password;
     }
 
-    public LoginPost(String username, String password){
+    public loginPost(String username, String password){
         this.username = username;
         this.password = password;
     }

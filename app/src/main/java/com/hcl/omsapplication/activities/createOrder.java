@@ -1,14 +1,18 @@
-package com.hcl.omsapplication;
-
-import androidx.appcompat.app.AppCompatActivity;
+package com.hcl.omsapplication.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.hcl.omsapplication.models.createOrder.createOrderStatus;
+import com.hcl.omsapplication.misc.Post;
+import com.hcl.omsapplication.R;
+import com.hcl.omsapplication.services.apiCalls;
 
 import java.util.List;
 
@@ -18,7 +22,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class CreateOrder extends AppCompatActivity {
+public class createOrder extends AppCompatActivity {
 
     private TextView textViewResult;
     private apiCalls apiCalls;
@@ -48,7 +52,7 @@ public class CreateOrder extends AppCompatActivity {
         createOrderPost();
     }
 
-    private void createOrderPost() {
+    private JsonObject createOrderForm(){
         JsonObject paramObject = new JsonObject();
         JsonObject items = new JsonObject();
         JsonObject quantity = new JsonObject();
@@ -86,18 +90,25 @@ public class CreateOrder extends AppCompatActivity {
 
         System.out.println(paramObject);
 
-        Call<CreateOrderStatus> call = apiCalls.createOrderPost(paramObject);
+        return paramObject;
+    }
 
-        call.enqueue(new Callback<CreateOrderStatus>() {
+    private void createOrderPost() {
+
+        JsonObject paramObject = createOrderForm();
+
+        Call<createOrderStatus> call = apiCalls.createOrderPost(paramObject);
+
+        call.enqueue(new Callback<createOrderStatus>() {
             @Override
-            public void onResponse(Call<CreateOrderStatus> call, Response<CreateOrderStatus> response) {
+            public void onResponse(Call<createOrderStatus> call, Response<createOrderStatus> response) {
                 System.out.println(response);
                 if (!response.isSuccessful()) {
                     textViewResult.setText("Code: " + response.code());
                     return;
                 }
 
-                CreateOrderStatus status = response.body();
+                createOrderStatus status = response.body();
 
                 if (status.success) {
                     textViewResult.setText("Success");
@@ -106,7 +117,7 @@ public class CreateOrder extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<CreateOrderStatus> call, Throwable t) {
+            public void onFailure(Call<createOrderStatus> call, Throwable t) {
                 textViewResult.setText(t.getMessage());
             }
 

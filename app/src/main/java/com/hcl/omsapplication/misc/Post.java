@@ -1,4 +1,4 @@
-package com.hcl.omsapplication;
+package com.hcl.omsapplication.misc;
 
 import com.google.gson.annotations.SerializedName;
 

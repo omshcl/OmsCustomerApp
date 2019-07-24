@@ -1,4 +1,4 @@
-package com.hcl.omsapplication;
+package com.hcl.omsapplication.models.createOrder;
 
 import java.lang.reflect.Array;
 
