@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -15,6 +16,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class CreateOrderActivity extends AppCompatActivity {
@@ -26,6 +28,10 @@ public class CreateOrderActivity extends AppCompatActivity {
         Button button3 = (Button) findViewById(R.id.button3);
 
         final TextView textView2 = (TextView) findViewById(R.id.textView2);
+        TextView textView3=(TextView)findViewById(R.id.textView3);
+        Bundle bundle=getIntent().getExtras();
+        String s=bundle.getString("name");
+        textView3.setText("Welcome"+" "+s);
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -75,7 +81,7 @@ public class CreateOrderActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(JSONObject response) {
 
-                            textView2.setText(response.toString());
+                            Toast.makeText(getApplicationContext(),"true",Toast.LENGTH_LONG).show();
 
                         }
                     }, new Response.ErrorListener() {
