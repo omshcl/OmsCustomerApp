@@ -1,12 +1,14 @@
 package com.hcl.omsapplication.activities;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.location.Geofence;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.hcl.omsapplication.models.createOrder.createOrderStatus;
@@ -16,6 +18,13 @@ import com.hcl.omsapplication.services.apiCalls;
 
 import java.util.List;
 
+import io.nlopez.smartlocation.OnGeofencingTransitionListener;
+import io.nlopez.smartlocation.OnLocationUpdatedListener;
+import io.nlopez.smartlocation.SmartLocation;
+import io.nlopez.smartlocation.geofencing.model.GeofenceModel;
+import io.nlopez.smartlocation.geofencing.utils.TransitionGeofence;
+import io.nlopez.smartlocation.location.config.LocationAccuracy;
+import io.nlopez.smartlocation.location.config.LocationParams;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -43,9 +52,54 @@ public class createOrder extends AppCompatActivity {
                 .build();
         apiCalls = retrofit.create(apiCalls.class);
 
+        addGeofencing();
+        startLocationListener();
+        System.out.println("Here");
 //        getPosts();
 //        createPost();
 
+    }
+
+    private void addGeofencing(){
+        GeofenceModel shipnode = new GeofenceModel.Builder("id_shinode")
+                .setTransition(Geofence.GEOFENCE_TRANSITION_ENTER)
+                .setLatitude(37.4219983)
+                .setLongitude(-122.084)
+                .setRadius(50)
+                .build();
+
+        SmartLocation.with(this).geofencing()
+                .add(shipnode)
+                .start(new OnGeofencingTransitionListener() {
+                    @Override
+                    public void onGeofenceTransition(TransitionGeofence fence) {
+                        fence.notify();
+                    }
+                });
+    }
+
+    private void startLocationListener() {
+
+        long mLocTrackingInterval = 1000 * 5; // 5 sec
+        float trackingDistance = 0;
+        LocationAccuracy trackingAccuracy = LocationAccuracy.HIGH;
+
+        LocationParams.Builder builder = new LocationParams.Builder()
+                .setAccuracy(trackingAccuracy)
+                .setDistance(trackingDistance)
+                .setInterval(mLocTrackingInterval);
+
+        SmartLocation.with(this)
+                .location()
+                .continuous()
+                .config(builder.build())
+                .start(new OnLocationUpdatedListener() {
+                    @Override
+                    public void onLocationUpdated(Location location) {
+                        System.out.println(location.getLatitude());
+                        System.out.println(location.getLongitude());
+                    }
+                });
     }
 
     public void createOrder(View view) {
@@ -99,6 +153,7 @@ public class createOrder extends AppCompatActivity {
 
         Call<createOrderStatus> call = apiCalls.createOrderPost(paramObject);
 
+        SmartLocation.with(this).location().stop();
         call.enqueue(new Callback<createOrderStatus>() {
             @Override
             public void onResponse(Call<createOrderStatus> call, Response<createOrderStatus> response) {
