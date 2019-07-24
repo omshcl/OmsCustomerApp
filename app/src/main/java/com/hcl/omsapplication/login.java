@@ -8,13 +8,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.google.gson.JsonObject;
-
-import org.json.JSONObject;
-
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -22,7 +15,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class login extends AppCompatActivity {
-    private sampleGetApi sampleGetApi;
+    private apiCalls apiCalls;
     private TextView textViewResult;
 
     @Override
@@ -32,10 +25,10 @@ public class login extends AppCompatActivity {
 
         textViewResult = findViewById(R.id.text_view_result);
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://4626254e.ngrok.io")
+                .baseUrl("http://d0faf90d.ngrok.io")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        sampleGetApi = retrofit.create(sampleGetApi.class);
+        apiCalls = retrofit.create(apiCalls.class);
     }
 
     public void login(View view) {
@@ -48,7 +41,7 @@ public class login extends AppCompatActivity {
 
     private void loginPost(String user, String pass) {
         final LoginPost login = new LoginPost(user, pass);
-        Call<LoginStatus> call = sampleGetApi.loginPost(login);
+        Call<LoginStatus> call = apiCalls.loginPost(login);
 
         call.enqueue(new Callback<LoginStatus>() {
             @Override
