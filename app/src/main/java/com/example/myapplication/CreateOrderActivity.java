@@ -27,11 +27,12 @@ public class CreateOrderActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_order);
         Button button3 = (Button) findViewById(R.id.button3);
 
-        final TextView textView2 = (TextView) findViewById(R.id.textView2);
+
         TextView textView3=(TextView)findViewById(R.id.textView3);
         Bundle bundle=getIntent().getExtras();
         String s=bundle.getString("name");
         textView3.setText("Welcome"+" "+s);
+
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,15 +81,17 @@ public class CreateOrderActivity extends AppCompatActivity {
                     JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, parameters, new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
+                            Intent i=new Intent(getApplicationContext(),LocationActivity.class);
+                            startActivity(i);
 
-                            Toast.makeText(getApplicationContext(),"true",Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(),"Order Placed",Toast.LENGTH_LONG).show();
 
                         }
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             error.printStackTrace();
-                            textView2.setText(error.toString());
+
 
                         }
                     });
