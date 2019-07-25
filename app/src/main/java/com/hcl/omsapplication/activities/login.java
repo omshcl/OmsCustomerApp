@@ -1,16 +1,16 @@
 package com.hcl.omsapplication.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.hcl.omsapplication.R;
 import com.hcl.omsapplication.models.login.loginPost;
 import com.hcl.omsapplication.models.login.loginStatus;
-import com.hcl.omsapplication.R;
 import com.hcl.omsapplication.services.apiCalls;
 
 import retrofit2.Call;
@@ -30,7 +30,7 @@ public class login extends AppCompatActivity {
 
         textViewResult = findViewById(R.id.text_view_result);
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://d0faf90d.ngrok.io")
+                .baseUrl("http://3cc14f4c.ngrok.io/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         apiCalls = retrofit.create(apiCalls.class);
