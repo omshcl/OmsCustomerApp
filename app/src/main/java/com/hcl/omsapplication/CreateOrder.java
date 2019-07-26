@@ -45,7 +45,7 @@ public class CreateOrder extends AppCompatActivity {
         startService(newIntent);
         Log.i("LocationService started", "called");
         ActivityCompat.requestPermissions(this,
-                new String[]{Manifest.permission.READ_CONTACTS},
+                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                 MY_PERMISSIONS_REQUEST_READ_CONTACTS);
     }
 
@@ -61,19 +61,22 @@ public class CreateOrder extends AppCompatActivity {
         geofenceList.add(new Geofence.Builder().setRequestId("friscoShop")
                 .setCircularRegion(33.09948150944979,-96.8288957057522,150)
                 .setExpirationDuration(Geofence.NEVER_EXPIRE)
-                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)
+                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT )
                 .build());
         geoFence.addGeofences(getGeofencingRequest(geofenceList), getGeofencePendingIntent())
                 .addOnSuccessListener(this, new OnSuccessListener<Void>() {
                     @Override
-                    public void onSuccess(Void aVoid) { }
+                    public void onSuccess(Void aVoid)
+                    {
+                        Log.e("geo","registered GEO fence");
+                    }
                 })
                 .addOnFailureListener(this, new OnFailureListener() {
                     @Override
-                    public void onFailure(@NonNull Exception e) { }
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("geo","failed to register GEO Fence",e);
+                    }
                 });
-
-
     }
 
     private GeofencingRequest getGeofencingRequest(List<Geofence> geofenceList) {

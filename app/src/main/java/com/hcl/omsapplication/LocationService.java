@@ -39,8 +39,5 @@ public class LocationService extends Service {
                 .setContentText("Service is running in the background")
                 .setContentIntent(pendingIntent)
                 .build());
-
-
-
     }
 }
