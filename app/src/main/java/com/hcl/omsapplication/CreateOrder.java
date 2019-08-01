@@ -60,8 +60,8 @@ public class CreateOrder extends AppCompatActivity {
         ArrayList<Geofence> geofenceList = new ArrayList<>();
         geofenceList.add(new Geofence.Builder().setRequestId("friscoShop")
                 .setCircularRegion(33.09948150944979,-96.8288957057522,150)
-                .setExpirationDuration(Geofence.NEVER_EXPIRE)
-                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT )
+                .setExpirationDuration(1000)
+                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT | Geofence.GEOFENCE_TRANSITION_DWELL )
                 .build());
         geoFence.addGeofences(getGeofencingRequest(geofenceList), getGeofencePendingIntent())
                 .addOnSuccessListener(this, new OnSuccessListener<Void>() {
@@ -79,13 +79,13 @@ public class CreateOrder extends AppCompatActivity {
                 });
     }
 
+
     private GeofencingRequest getGeofencingRequest(List<Geofence> geofenceList) {
         GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
         builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER);
         builder.addGeofences(geofenceList);
         return builder.build();
     }
-
 
     private PendingIntent getGeofencePendingIntent() {
         // Reuse the PendingIntent if we already have it.
@@ -99,6 +99,4 @@ public class CreateOrder extends AppCompatActivity {
                 FLAG_UPDATE_CURRENT);
         return geofencePendingIntent;
     }
-
-
 }
